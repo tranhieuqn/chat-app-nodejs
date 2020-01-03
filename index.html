@@ -26,6 +26,36 @@
       </div>
       <div id="messages"></div>
     </div>
-    <script></script>
+    <script>
+    
+    $(() => {
+      $("#send").click(() => {
+        sendMessage({
+          name: $("#name").val(),
+          message: $("#message").val()
+        })
+        getMessages();
+      })
+
+      const addMessagesUI = message => {
+        $("#messages").append(`
+                        <h4> ${message.name} </h4>
+                        <p>  ${message.message} </p>`)
+      }
+
+      const getMessages = () => {
+        $.get('http://localhost:3000/messages', (data) => {
+          data.forEach(addMessagesUI);
+        })
+      }
+
+      const sendMessage = message => {
+        console.log(message);
+        $.post('http://locahost:3000/messages', message)
+      }
+
+    })
+    
+    </script>
   </body>
 </html>

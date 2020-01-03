@@ -14,6 +14,23 @@ mongoose.connect(dbUrl, err => {
 
 const Message = mongoose.model("Message", { name: String, message: String });
 
+app.get('/messages', (req, res) => {
+  Message.find({}, (err, messages) => {
+    res.send(messages);
+  })
+})
+
+app.post('/messages', (req, res) => {
+  let message = new Message(req.body);
+  console.log(req.body);
+  message.save((err) => {
+    if (err) {
+      sendStatus(400);
+    }
+    res.sendStatus(200);
+  })
+})
+
 const server = app.listen(3000, () => {
   console.log("Server is running on port " + server.address().port);
 });
